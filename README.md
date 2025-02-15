@@ -75,31 +75,34 @@ This project utilizes modern DevOps tools to **deploy, automate, and monitor app
 
 ## **Project Structure** 📂
 
-/DevOps-Project
-├── /terraform
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── outputs.tf
-│   └── README.md
-├── /ansible
-│   ├── playbook.yml
-│   ├── inventory
-│   └── README.md
-├── /ci-cd
-│   ├── .github
-│   │   └── workflows
-│   │       └── ci-cd.yml
-│   └── README.md
-├── /docker
-│   ├── Dockerfile
-│   ├── docker-compose.yml
-│   └── README.md
-├── /tests
-│   ├── test_script.py
-│   └── README.md
-├── /docs
-│   └── architecture-diagram.md
-└── README.md
+  ```plaintext
+  /DevOps-Project
+  ├── /terraform
+  │   ├── main.tf
+  │   ├── variables.tf
+  │   ├── outputs.tf
+  │   └── README.md
+  ├── /Ansible
+  │   ├── Playbook.yml
+  │   ├── inventory
+  │   └── README.md
+  ├── /ci-cd
+  │   ├── .github
+  │   │   └── workflows
+  │   │       └── ci-cd.yml
+  │   └── README.md
+  ├── /docker
+  │   ├── Dockerfile
+  │   ├── docker-compose.yml
+  │   └── README.md
+  ├── /tests
+  │   ├── test_script.py
+  │   └── README.md
+  ├── /docs
+  │   └── architecture-diagram.md
+  └── README.md
+
+  ```
 
 ---
 
@@ -155,7 +158,7 @@ This project utilizes modern DevOps tools to **deploy, automate, and monitor app
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your_user/DevOps-Project.git
+   git clone --recursive --depth=1 https://github.com/OMaciasd/DevOps-Project.git
    cd DevOps-Project
 
    ```
@@ -206,7 +209,18 @@ This project utilizes modern DevOps tools to **deploy, automate, and monitor app
 ### 5️⃣ **Monitoring and Testing** 📊
 
 - **Prometheus and Grafana**: For infrastructure and application monitoring.
+
 - **Selenium and JMeter**: For automated integration and load testing.
+
+📜 Example path:
+
+  ```plaintext
+  /project
+    /tests
+      /integration
+        README.md
+
+  ```
 
 ---
 

@@ -1,0 +1,45 @@
+name: Container Security Scan
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Run Trivy Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'myregistry/myapp:v1'
+          severity: 'CRITICAL,HIGH'
+          vuln-type: 'os'
+          ignore-unfixed: true
+          light: false
+          template: '{{ .Target }} {{ .VulnerabilityID }} {{ .PkgName }} {{ .InstalledVersion }} {{ .FixedVersion }} {{ .Title }} {{ .Description }} {{ .Severity }} {{ .References }}'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          severity-threshold: CRITICAL
+          fail-on: 'CRITICAL,HIGH'
+          exit-code: 0
+          output: 'results.txt'
+          format: 'table'
+          debug: false
+          timeout: 0
+          cache-dir: '/tmp/trivy'
+          cache-expiry: 12h
+          cache-scan: true
+          insecure: false
+          custom-flags: ''
+          ignore-file: '.trivyignore'
+          ignore-policy: ''
+          input: ''
+          input-format: ''
+          security-checks: ''
+          no-progress: false
+          quiet: false
+          no-share: false
+          download-db-only: false

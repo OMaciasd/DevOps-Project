@@ -1,0 +1,111 @@
+Kubernetes/HPA/README.mdapiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-monitor
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          ports:
+            - containerPort: 9090
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+  endpoints:
+    - port: web
+      interval: 30s
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: grafana
+          image: grafana/grafana:8.2.5
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: "admin"
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+              ephemeral-storage: "1Gi"
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cpu-alerts
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          ports:
+            - containerPort: 9090
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+  groups:
+    - name: cpu-alerts-group
+      rules:
+        - alert: HighCPUUsage
+          expr: avg by (instance) (rate(node_cpu_seconds_total{mode="user"}[5m])) > 0.8
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "High CPU Usage detected"
+            description: "The CPU usage has exceeded 80% for more than 5 minutes."
+        - alert: HighMemoryUsage
+          expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 10
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High Memory Usage detected"
+            description: "The Memory usage has exceeded 90% for more than 5 minutes."
