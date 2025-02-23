@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  namespace: app
+  labels:
+    app: my-service
+    tier: frontend
+    role: service
+    env: prod
+    zone: public
+    region: us-east1
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    sessionAffinity: None
+    created: "2021-07-28 21:41:00"
+    modified: "2021-07-28 21:41:00"
+    description: My service
+    owner: "admin"
+spec:
+  selector:
+    app: my-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376  # Container port
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  sessionAffinity: None
+  loadBalancerIP: ""
+  loadBalancerSourceRanges:
+    -   # CIDR  block
+      -
+  healthCheckNodePort: 0
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  externalIPs:
+    -
+  loadBalancerClass: ""

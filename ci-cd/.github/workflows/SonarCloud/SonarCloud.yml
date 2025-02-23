@@ -1,0 +1,13 @@
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Java (if necessary)
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Run analysis with SonarCloud
+        run: mvn clean verify sonar:sonar -Dsonar.organization=ORG -Dsonar.projectKey=PROJECT_KEY -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }}

@@ -1,0 +1,17 @@
+scrape_configs:
+  - job_name: 'http_requests_total'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: /metrics
+  - job_name: 'http_request_duration_seconds'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: /metrics
+  - job_name: 'node_cpu_usage'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: /metrics
+  - job_name: 'node_memory_usage'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: /metrics
